@@ -7,6 +7,8 @@ Frontend written in React.
 ## Backend (FastAPI)
 Backend written in FastAPI.
 
+![image](https://user-images.githubusercontent.com/35516367/186083075-c959217d-e9d5-4f26-92f3-bf266d051ef0.png)
+
 #### Requirements
 1. Install the requirements.
 ```
