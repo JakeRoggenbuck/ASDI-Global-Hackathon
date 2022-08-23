@@ -1,4 +1,4 @@
-[Plant Here Logo](https://raw.githubusercontent.com/GeorgeBerdovskiy/plant-here/main/static/Logo.png)
+![Plant Here Logo](https://raw.githubusercontent.com/GeorgeBerdovskiy/plant-here/main/static/Logo.png)
 # Plant Here!
 
 ## Frontend (React)
