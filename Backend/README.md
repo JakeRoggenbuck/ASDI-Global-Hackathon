@@ -5,6 +5,9 @@
 - `/`
 	- {"Hello": "World"}
 
+- `/timeframe`
+	- Get the timeframe of the data that we have.
+
 - `/plant-request`
 	- Lat
 	- Lon
