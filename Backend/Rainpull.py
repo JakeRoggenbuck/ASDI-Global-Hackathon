@@ -8,6 +8,8 @@ import numpy as np
 
 
 from botocore.handlers import disable_signing
+
+
 s3_resource = boto3.resource('s3')
 s3_resource.meta.client.meta.events.register('choose-signer.s3.*', disable_signing)
 
