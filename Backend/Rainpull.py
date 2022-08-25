@@ -5,52 +5,42 @@ from io import BytesIO
 import gzip
 import numpy as np
 
-
-
 from botocore.handlers import disable_signing
 s3_resource = boto3.resource('s3')
 s3_resource.meta.client.meta.events.register('choose-signer.s3.*', disable_signing)
 
-
-
-# def collect_data():
-#     year = "2020"
-#     month = "01"
-
-#     for i in range(1,32):
-#         day = str(i)
-
-#         if (i < 10):
-#             day = "0" + day
-
-#         date_file=f"2020{month}{day}"
-#         date_path=f"2020/{month}/{day}"
-
-#         key=f"rain_rate/{date_path}/NPR.GEO.GHE.v1.S{date_file}0000.nc.gz"
-
-#         zip_obj = s3_resource.Object(bucket_name="noaa-ghe-pds", key=key)
-#         buffer = BytesIO(zip_obj.get()["Body"].read())
-
-#         dataset_new = nc.Dataset('none.nc', 'w')
-
-#         with gzip.open(buffer, 'rb') as f:
-#             file_content = f.read()
-#             dataset_new = nc.Dataset('TEMP', memory=file_content)
-
-#         rainfall_array = dataset_new['rain']
-
-#         dataframe = pd.DataFrame(rainfall_array[923:3876, 4453:6541])
-#         dataframe.to_csv(f'africa-rainfall/{date_file}.csv')
-
-#         print(key)
-
-
-
-# collect_data()
+def collect_data():
+    year = "2020"
+    month = "01"
+    
+    for i in range(1,32):
+        day = str(i)
+        
+        if (i < 10):
+            day = "0" + day
+        
+        date_file=f"2020{month}{day}"
+        date_path=f"2020/{month}/{day}"
+        
+        key=f"rain_rate/{date_path}/NPR.GEO.GHE.v1.S{date_file}0000.nc.gz"
+        
+        zip_obj = s3_resource.Object(bucket_name="noaa-ghe-pds", key=key)
+        buffer = BytesIO(zip_obj.get()["Body"].read())
+        
+        dataset_new = nc.Dataset('none.nc', 'w')
+        
+        with gzip.open(buffer, 'rb') as f:
+            file_content = f.read()
+            dataset_new = nc.Dataset('TEMP', memory=file_content)
+            
+        rainfall_array = dataset_new['rain']
+        
+        dataframe = pd.DataFrame(rainfall_array[923:3876, 4453:6541])
+        dataframe.to_csv(f'africa-rainfall/{date_file}.csv')
 
 # Requested coordinates
-lat_requested = -0.6229166667
-long_requested = -18.32335329
+lat_requested = -2.261929569
+long_requested = 17.33705959
 
 def read_data():
     month = "01"
@@ -71,19 +61,16 @@ def read_data():
 
 def retrieve_data(df, latitude, longitude):
     # Both are now validated! Next, correct lat. and long. to begin at zero
-    lat_corrected = 65 - latitude
+    lat_corrected = 65 + latitude
     long_corrected = longitude + 180
 
     # Convert coordinates into indexes (reminder - latitude is y, longitude is x)
     # TODO - Look into proper rounding (up/down)
-
-    lat_index = round((4800.0 / 130) * lat_corrected - 923) - 2
-    long_index = round((10020.0 / 360) * long_corrected - 4453) +1
-
-    print("LAT INDEX = " + str(round(lat_index)))
-    print("LONG INDEX = " + str(round(long_index)))
-
-    print(df.iloc[lat_index].iloc[long_index])
+    
+    lat_index = round((4799.0 / 130) * lat_corrected - 923) 
+    long_index = round((10019.0 / 360) * long_corrected - 4453) +1
+    return lat_index, long_corrected
+    
 
 #in the dataframe, the labels are not included so we need to subtract one from horz and two from vert
 #might need to account for the csv printing the headers label when comparing to the actual 2d array. Or maybe because csv start at 1 and array start at 0.
