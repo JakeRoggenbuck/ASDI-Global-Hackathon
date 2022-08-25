@@ -38,8 +38,6 @@ def collect_data():
         dataframe = pd.DataFrame(rainfall_array[923:3876, 4453:6541])
         dataframe.to_csv(f'africa-rainfall/{date_file}.csv')
 
-# collect_data()
-
 # Requested coordinates
 lat_requested = -2.261929569
 long_requested = 17.33705959
@@ -71,7 +69,8 @@ def retrieve_data(df, latitude, longitude):
     
     lat_index = round((4799.0 / 130) * lat_corrected - 923) 
     long_index = round((10019.0 / 360) * long_corrected - 4453) +1
-    return 
+    return lat_index, long_corrected
+    
 
 #in the dataframe, the labels are not included so we need to subtract one from horz and two from vert
 #might need to account for the csv printing the headers label when comparing to the actual 2d array. Or maybe because csv start at 1 and array start at 0.
