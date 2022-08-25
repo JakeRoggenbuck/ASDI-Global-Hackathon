@@ -48,7 +48,7 @@ def read_root():
 def read_timeframe():
     """Get the timeframe of the data that we have."""
     return {
-        "start": datetime(2021, 1, 1),
+        "start": datetime(2020, 1, 1),
         "end": datetime(2050, 1, 1),
     }
 
