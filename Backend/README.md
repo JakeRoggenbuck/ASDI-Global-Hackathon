@@ -1,35 +1,28 @@
 # Backend
 
-# API Layout
+## API Routes
 
-- `/`
-	- {"Hello": "World"}
+`/` -> Return `{ "Hello" : "World" }`
 
-- `/timeframe`
-	- Get the timeframe of the data that we have.
+`/timeframe` -> Return the time frame for which we have data
 
-- `/plant-request`
-	- Lat
-	- Lon
-	- Time start
-	- Time end
+`/plant-request` -> Request will include latitude, longitude, starting date, and ending date, and response will include the best crops to plant as IDs, soil pH, rainfall, and confidence level.
 
-	{
-		"latitude": float,
-		"longitude": float,
-		"start": string,
-		"end": string,
-	}
+### Request
+```
+{
+	"latitude": float,
+	"longitude": float,
+	"start_dtae": string,
+	"end_date": string,
+}
+```
 
-	Return
-	- Best crops (as many) in IDs
-	- Some specific data
-		- Soil pH
-		- Rain in some unit
-		- Confidence Level
-
-	{
-		"crops": [int, int],
-		"soil_ph": float,
-		"conf_lvl": float,
-	}
+### Response
+```
+{
+	"crops": [int, ..., int],
+	"soil_ph": float,
+	"confidence": float,
+}
+```
