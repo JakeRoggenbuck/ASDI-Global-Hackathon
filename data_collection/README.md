@@ -1,5 +1,5 @@
 # Rainfall Data Collection
-One challenge we faced during this project was the large quantity of rainfall data stored on the original AWS S3 bucket, with around ninety 200 MB files for every day of the year. Our solution was to download this data automatically using a Python script, normalizing the rainfall measurements over the course of every day, and reuploading the normalized data for every day as a relatively small .csv file on our own S3 bucket.
+One challenge we faced during this project was the large quantity of rainfall data stored on the original NOAA Global Hydro Estimator AWS S3 bucket (https://registry.opendata.aws/noaa-ghe), with around ninety 200 MB files for every day of the year. Our solution was to download this data automatically using a Python script, normalizing the rainfall measurements over the course of every day, and reuploading the normalized data for every day as a relatively small .csv file on our own S3 bucket.
 
 ## Data Description
 Every day on the NOAA Global Hydration Estimator bucket is represented by around ninety .nc files, each reporting estimates fifteen minutes apart. An .nc dataset is essentially a large 2D array, with rows representing latitude degrees and columns representing longitude degrees.

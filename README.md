@@ -6,7 +6,7 @@ This simple web application (our submission to the 2022 Amazon Sustainability Da
 Frontend is written in ReactJS (more details soon).
 
 ## Backend (FastAPI)
-Backend written in FastAPI (more details soon).
+Backend is written in FastAPI (more details soon).
 
 ![image](https://user-images.githubusercontent.com/35516367/186083075-c959217d-e9d5-4f26-92f3-bf266d051ef0.png)
 
