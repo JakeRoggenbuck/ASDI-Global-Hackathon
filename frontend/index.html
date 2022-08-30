@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Plant Here!</title>
 
-	<script type="text/javascript" src="[URL FOR MAPS API WITH KEY]"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAClXk3JbRm8xIS0AJmXE2Nr7n3-RRCHaE"></script>
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 	<link rel="stylesheet" href="style.css">
@@ -19,10 +19,122 @@
 		<h2 style="margin-bottom: 32px">Thinking of Planting Something?</h2>
 		<p style="margin-bottom: 32px">Use this tool to determine whether your location would be suitable for farming, and what kind of crops would thrive best!<br/><br/></p>
 	</div>
-
+	
 	<div class="right-container">
 		<div class="smaller-width" v-scope>
 			<div id="map-canvas"></div>
+			<form id = "form">
+				Start <br>
+				<select name="startmonth">
+					<option value="1">January</option>
+					<option value="2">February</option>
+					<option value="3">March</option>
+					<option value="4">April</option>
+					<option value="5">May</option>
+					<option value="6">June</option>
+					<option value="7">July</option>
+					<option value="8">August</option>
+					<option value="9">September</option>
+					<option value="10">October</option>
+					<option value="11">November</option>
+				</select>
+	
+				<select name="startdays">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8">8</option>
+					<option value="9">9</option>
+					<option value="10">10</option>
+					<option value="11">11</option>
+					<option value="12">12</option>
+					<option value="13">13</option>
+					<option value="14">14</option>
+					<option value="15">15</option>
+					<option value="16">16</option>
+					<option value="17">17</option>
+					<option value="18">18</option>
+					<option value="19">19</option>
+					<option value="20">20</option>
+					<option value="21">21</option>
+					<option value="22">22</option>
+					<option value="23">23</option>
+					<option value="24">24</option>
+					<option value="25">25</option>
+					<option value="26">26</option>
+					<option value="27">27</option>
+					<option value="28">28</option>
+					<option value="29">29</option>
+					<option value="30">30</option>
+				</select>
+	
+				<select name="startyear">
+					<option value="2020">2020</option>
+					<option value="2021">2021</option>
+					<option value="2022">2022</option>
+				</select> <br><br>
+				
+	
+				End <br>
+				<select name="endmonth">
+					<option value="1">January</option>
+					<option value="2">February</option>
+					<option value="3">March</option>
+					<option value="4">April</option>
+					<option value="5">May</option>
+					<option value="6">June</option>
+					<option value="7">July</option>
+					<option value="8">August</option>
+					<option value="9">September</option>
+					<option value="10">October</option>
+					<option value="11">November</option>
+				</select>
+	
+				<select name="enddays">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8">8</option>
+					<option value="9">9</option>
+					<option value="10">10</option>
+					<option value="11">11</option>
+					<option value="12">12</option>
+					<option value="13">13</option>
+					<option value="14">14</option>
+					<option value="15">15</option>
+					<option value="16">16</option>
+					<option value="17">17</option>
+					<option value="18">18</option>
+					<option value="19">19</option>
+					<option value="20">20</option>
+					<option value="21">21</option>
+					<option value="22">22</option>
+					<option value="23">23</option>
+					<option value="24">24</option>
+					<option value="25">25</option>
+					<option value="26">26</option>
+					<option value="27">27</option>
+					<option value="28">28</option>
+					<option value="29">29</option>
+					<option value="30">30</option>
+				</select>
+				
+				<select name="endyear">
+					<option value="2020">2020</option>
+					<option value="2021">2021</option>
+					<option value="2022">2022</option>
+				</select> <br><br>
+				<input type="Submit" name="" value="submit"> 
+				<br><br>
+		</form>
 			<h3>Directions</h3>
 			<p style="margin-bottom: 32px;">Drag the marker above to whatever location you wish to explore. Then, press analyze and we'll tell you the best crops to plant based on that area's projected rainfall and soil pH!</p>
 
@@ -83,11 +195,17 @@
 		async collectData() {
 			console.log("Collecting data for " + window.latitude + ", " + window.longitude + ".")
 
-			let response = await axios.get('http://localhost:5000/api/')	
+			let response = await axios.post('http://127.0.0.1:8000/plant-request', {
+				latitude: 38,
+				longitude: 39,
+				start: "2022-08-30 20:46:13.853164",
+				end: "2022-08-30 20:46:13.853164"
+			}) //host 0.0.0.0 causes CORS error
+						
 			console.log(response)
 
 			this.results = {
-				'ideal_plants': ["peas", "soybeans", "peanuts", "potatoes"]
+				'ideal_plants': response.data
 			}
 		}
 	}).mount()
