@@ -10,8 +10,6 @@ import gzip
 with open("./config.yml") as file:
     config = yaml.safe_load(file)
 
-from main_file import main
-
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -48,7 +46,6 @@ class PlantRequest(BaseModel):
     longitude: float
     start: datetime
     end: datetime
-    
 
 
 class PlantReturn(BaseModel):
@@ -56,24 +53,24 @@ class PlantReturn(BaseModel):
     {
         "crops": str,   16 def plant_request(pl_req: PlantRequest):
 
-        
+
     }
     """
 
     crops: list[int]
     soil_ph: float
     conf_lvl: float
-    
+
 
 def plant_request(pl_req: PlantRequest):
     rains = []
 
     time = pl_req.start
 
-    file = f"{time.year}/{str(time.month).zfill(2)}/{time.year}{str(time.month).zfill(2)}{str(time.day).zfill(2)}.csv.gz"
-    print(file)
+    file = f"2020/{str(time.month).zfill(2)}/{2020}{str(time.month).zfill(2)}{str(time.day).zfill(2)}.csv.gz"
+
     buck = s3_resource.Bucket("rainfall-normalized")
-    a = buck.download_file("2020/12/20201227.csv.gz", "tmp/file.csv.gz")
+    a = buck.download_file(file, "tmp/file.csv.gz")
 
     with gzip.open("tmp/file.csv.gz", 'rb') as f:
         with open("tmp/file.csv", "wb") as file:
@@ -83,9 +80,15 @@ def plant_request(pl_req: PlantRequest):
 
     rain = df.iloc[int(pl_req.latitude)].iloc[int(pl_req.longitude)]
 
-    rains.append(f"The rain at lat={pl_req.latitude}, lon={pl_req.longitude} is {rain} on {time}")
+    rains.append(
+        {
+            "text": f"The rain at lat={pl_req.latitude}, lon={pl_req.longitude} is {rain} on {time}",
+            "plants": ["corn", "soybean", "moringa"],
+        }
+    )
 
     return rains
+
 
 @app.get("/")
 def read_root():
