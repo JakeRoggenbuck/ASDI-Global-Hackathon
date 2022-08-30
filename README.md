@@ -5,6 +5,9 @@ This simple web application (our submission to the 2022 Amazon Sustainability Da
 
 ![image](resources/Landing.png)
 
+![image](https://user-images.githubusercontent.com/35516367/187536362-0f4f3c7e-269f-48ba-aa5a-5558e2d129d5.png)
+
+
 ## Frontend (ReactJS)
 Frontend is a very lightweight single webpage built with HTML/CSS, Vanilla JS, and Petite Vue.
 
