@@ -11,9 +11,11 @@ with open("./config.yml") as file:
 app = FastAPI()
 
 session = boto3.Session(
-    aws_access_key_id=config.aws_access_key_id,
-    aws_secret_access_key=config.aws_secret_access_key,
+    aws_access_key_id=config["aws_access_key_id"],
+    aws_secret_access_key=config["aws_secret_access_key"],
 )
+
+s3_resource = session.resource('s3')
 
 
 class PlantRequest(BaseModel):
@@ -47,6 +49,10 @@ class PlantReturn(BaseModel):
 
 
 def plant_request(pl_req: PlantRequest):
+    time = pl_req.start
+    file = f"{time.year}_{str(time.month).zfill(2)}_{time.year}{str(time.month).zfill(2)}{str(time.day).zfill(2)}.csv.gz"
+    s3_resource.meta.client.download_file('rainfall-normalized', file, '/tmp/')
+
     return f"{pl_req.latitude=} {pl_req.longitude=}"
 
 
