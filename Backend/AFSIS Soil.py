@@ -1,30 +1,48 @@
 import pandas as pd
+from math import sqrt, pow
 
-lat_requested = -0.6229166667
-long_requested = -18.32335329
+lat_requested = -6.85
+long_requested = 34.24
 
-def retrieve_data(df, latitude, longitude): #closest distance algorithm
-
-    lat_dict = {}
-    long_dict = {}
-    print(df.iloc[1842].iloc[2]) #arrays start at zero lol, csv's don't.
+def closest_distance(df, latitude, longitude): #closest distance algorithm
+    
+    dictionary_for_points = {}
+    #arrays start at zero lol, csv's don't. -> 0-1842, and 0-14
     for i in range(1843):
         lat = df.iloc[i].iloc[2]
         long = df.iloc[i].iloc[3]
         diff_lat = abs(lat - latitude)
-        diff_long = abs(long-longitude)
-        lat_dict[lat] = diff_lat
-        long_dict[long] = diff_long
+        diff_long = abs(long- longitude)
+        dictionary_for_points[i] = diff_lat + diff_long
 
-    closest_lat= min(lat_dict.values())
-    closest_long = min(long_dict.values())
+    closest_point = min(dictionary_for_points.values())
+    point_key = list(dictionary_for_points.keys())[list(dictionary_for_points.values()).index(closest_point)]
+    lat = df.iloc[point_key].iloc[2]
+    long = df.iloc[point_key].iloc[3]
+    ssn = df.iloc[point_key].iloc[0]
 
-    lat = list(lat_dict.keys())[list(lat_dict.values()).index(closest_lat)]
-    long = list(long_dict.keys())[list(long_dict.values()).index(closest_long)]
+    #find distance. 
+    vertical_distance = abs(lat-latitude) * 69 #convert to miles
+    horizontal_distance = abs(long-longitude) * 53
+    total_distance = sqrt(pow(vertical_distance,2) + pow(horizontal_distance,2))
+    if total_distance > 100:# 100 miles arbitrary distance for good and bad. 
+        indicator= "bad" 
+    else:
+        indicator = "good"
 
-    print(lat,long)
+    return [ssn,lat,long, indicator ]
 
-path = "georeferences.csv"
+def find_soil_ph(lat, long):
+    path = "georeferences.csv"
+    temp_dataframe = pd.read_csv(path)
+    closest_distance_array = closest_distance(temp_dataframe, lat,long)
+    ssn = closest_distance_array[0]
 
-temp_dataframe = pd.read_csv(path)
-retrieve_data(temp_dataframe, lat_requested, long_requested)
+    path_to_ph = "Wet_Chemistry_CROPNUTS.csv"
+    ph_dataframe = pd.read_csv(path_to_ph)
+    for i in range(1908):
+        found_ssn = ph_dataframe.iloc[i].iloc[0]
+        if ssn == found_ssn:
+            return ph_dataframe.iloc[i].iloc[17]
+    return 
+
