@@ -5,7 +5,7 @@ import pandas as pd
 
 def script_for_nutrients(food):
    
-    api_key="api_key=2Ma3nUPBcSGR8K7S6mzSjffqKZagXbSGu8ejFvDD"
+    api_key="API_KEy"
     url = "https://api.nal.usda.gov/fdc/v1/foods/search?"
     params = f"&query={food}"
     results = requests.get(url+ api_key+params)
