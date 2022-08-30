@@ -67,9 +67,10 @@ def plant_request(pl_req: PlantRequest):
 
     time = pl_req.start
 
-    file = f"{time.year}/{str(time.month).zfill(2)}/{time.year}{str(time.month).zfill(2)}{str(time.day).zfill(2)}.csv.gz"
+    file = f"2020/{str(time.month).zfill(2)}/{2020}{str(time.month).zfill(2)}{str(time.day).zfill(2)}.csv.gz"
+
     buck = s3_resource.Bucket("rainfall-normalized")
-    a = buck.download_file("2020/12/20201227.csv.gz", "tmp/file.csv.gz")
+    a = buck.download_file(file, "tmp/file.csv.gz")
 
     with gzip.open("tmp/file.csv.gz", 'rb') as f:
         with open("tmp/file.csv", "wb") as file:
