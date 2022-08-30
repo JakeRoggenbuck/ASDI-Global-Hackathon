@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from fastapi import FastAPI
-from datetime import datetime
+from datetime import datetime, timedelta
+import pandas as pd
 import boto3
 import uvicorn
 import yaml
@@ -49,11 +50,26 @@ class PlantReturn(BaseModel):
 
 
 def plant_request(pl_req: PlantRequest):
-    time = pl_req.start
-    file = f"{time.year}_{str(time.month).zfill(2)}_{time.year}{str(time.month).zfill(2)}{str(time.day).zfill(2)}.csv.gz"
-    s3_resource.meta.client.download_file('rainfall-normalized', file, '/tmp/')
+    rains = []
 
-    return f"{pl_req.latitude=} {pl_req.longitude=}"
+    time = pl_req.start
+    while time + timedelta(days=1) < pl_req.end:
+        time = time + timedelta(days=1)
+
+        file = f"{time.year}_{str(time.month).zfill(2)}_{time.year}{str(time.month).zfill(2)}{str(time.day).zfill(2)}.csv.gz"
+        print(file)
+        s3_resource.Bucket("rainfall-normalized").download_file("rain/" + file, "tmp/file.csv")
+
+        df = pd.read_csv("tmp/file.csv")
+        print(df)
+        rain = df.iloc[pl_req.latitude].iloc[pl_req.longitude]
+        print(rain)
+
+        rains.append(
+            f"The rain at lat={pl_req.latitude}, lon={pl_req.longitude} is {rain} on {time}"
+        )
+
+    return rains
 
 
 @app.get("/")
