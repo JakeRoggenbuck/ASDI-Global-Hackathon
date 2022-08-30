@@ -10,6 +10,10 @@ import gzip
 with open("./config.yml") as file:
     config = yaml.safe_load(file)
 
+from main_file import main
+
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI()
 
 session = boto3.Session(
@@ -18,6 +22,16 @@ session = boto3.Session(
 )
 
 s3_resource = session.resource('s3')
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class PlantRequest(BaseModel):
@@ -34,21 +48,22 @@ class PlantRequest(BaseModel):
     longitude: float
     start: datetime
     end: datetime
+    
 
 
 class PlantReturn(BaseModel):
     """
     {
-        "crops": [int, int],
-        "soil_ph": float,
-        "conf_lvl": float,
+        "crops": str,   16 def plant_request(pl_req: PlantRequest):
+
+        
     }
     """
 
     crops: list[int]
     soil_ph: float
     conf_lvl: float
-
+    
 
 def plant_request(pl_req: PlantRequest):
     rains = []
@@ -72,7 +87,6 @@ def plant_request(pl_req: PlantRequest):
 
     return rains
 
-
 @app.get("/")
 def read_root():
     return {"Hello": "Plant Here!"}
@@ -83,7 +97,7 @@ def read_timeframe():
     """Get the timeframe of the data that we have."""
     return {
         "start": datetime(2020, 1, 1),
-        "end": datetime(2050, 1, 1),
+        "end": datetime(2022, 1, 1),
     }
 
 
@@ -93,4 +107,4 @@ def read_plant_request(pl_req: PlantRequest):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="127.0.0.1", port=8000)
