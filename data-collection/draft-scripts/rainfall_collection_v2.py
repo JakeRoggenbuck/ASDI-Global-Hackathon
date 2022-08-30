@@ -45,10 +45,10 @@ def collect_data():
 	total_inserts = 0
 
 	year = "2020"
-	months = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
+	months = ["01"]
 
 	for month in months:
-		for i in range(1,32):
+		for i in range(12,32):
 			day = str(i)
 
 			if (i < 10):
@@ -89,6 +89,6 @@ def collect_data():
 				print(f"LAST FILE TOOK {time_end - time_start:0.4f} SECONDS.")
 			
 			sum_dataframe = sum_dataframe.div(sum_count)
-			sum_dataframe.to_csv(f'data/2020/20200101_norm.csv')
+			sum_dataframe.to_csv(f'data/2020/2020{month}{day}_norm.csv')
 
 collect_data()
