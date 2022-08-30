@@ -1,8 +1,8 @@
-![Plant Here Logo](https://raw.githubusercontent.com/GeorgeBerdovskiy/plant-here/main/static/Logo.png)
+![Plant Here Logo](frontend/images/NewLogo.png)
 # Plant Here!
 This simple web application (our submission to the 2022 Amazon Sustainability Data Initiaitve Hackathon) allows users to determine what crops would thrive best in their region based on rainfall data and soil pH analyzed with a simple machine learning model.
 
-![image](https://user-images.githubusercontent.com/35516367/187392875-d8b51703-1ee5-4300-994f-caccc792b0b8.png)
+![image](resources/Landing.png)
 
 ## Frontend (ReactJS)
 Frontend is a very lightweight single webpage built with HTML/CSS, Vanilla JS, and Petite Vue.
@@ -29,3 +29,6 @@ INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
 ```
+
+## Additional Credits
+Floating plant icon created by [Andinur](https://www.flaticon.com/authors/andinur) on [www.flaticon.com](https://www.flaticon.com).
