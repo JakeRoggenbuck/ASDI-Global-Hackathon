@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Plant Here!</title>
+
+	<script type="text/javascript" src="[URL FOR MAPS API WITH KEY]"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="split-view">
+	<div class="left-container">
+		<img class="logo" src="images/NewLogo.png" style="margin-bottom: 32px;" />
+
+		<h2 style="margin-bottom: 32px">Thinking of Planting Something?</h2>
+		<p style="margin-bottom: 32px">Use this tool to determine whether your location would be suitable for farming, and what kind of crops would thrive best!<br/><br/></p>
+	</div>
+
+	<div class="right-container">
+		<div class="smaller-width" v-scope>
+			<div id="map-canvas"></div>
+			<h3>Directions</h3>
+			<p style="margin-bottom: 32px;">Drag the marker above to whatever location you wish to explore. Then, press analyze and we'll tell you the best crops to plant based on that area's projected rainfall and soil pH!</p>
+
+			<button class="white-button" @click="collectData">Analyze</button>
+
+			<div v-if="results" style="margin-top: 32px;">
+				<h3>Results</h3>
+				<p style="margin-bottom: 32px;">This region would be ideal for 
+					<b>
+						<span v-for="(plant, index) in results.ideal_plants" :key="index">
+							<span v-if="index !== results.ideal_plants.length - 1">
+								{{ plant }},
+							</span>
+
+							<span v-if="index === results.ideal_plants.length - 1">
+								and {{ plant }}.
+							</span>
+						</span>
+					</b>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<script type="module">
+	import { createApp } from 'https://unpkg.com/petite-vue?module'
+
+	var map = new google.maps.Map(document.getElementById('map-canvas'), {
+	    zoom: 3,
+	    center: new google.maps.LatLng(0, 17.5),
+	    mapTypeId: google.maps.MapTypeId.ROADMAP
+	})
+
+	var myMarker = new google.maps.Marker({
+	    position: new google.maps.LatLng(0, 17.5),
+	    draggable: true
+	});
+
+	window.latitude = 0
+	window.longitude = 17.5
+
+	google.maps.event.addListener(myMarker, 'dragend', function (evt) {
+	    window.latitude = evt.latLng.lat().toFixed(3)
+	    window.longitude = evt.latLng.lng().toFixed(3)
+	});
+
+	google.maps.event.addListener(myMarker, 'dragstart', function (evt) { });
+
+	map.setCenter(myMarker.position);
+	myMarker.setMap(map);
+
+	createApp({
+		results: undefined,
+		
+		async collectData() {
+			console.log("Collecting data for " + window.latitude + ", " + window.longitude + ".")
+
+			let response = await axios.get('http://localhost:5000/api/')	
+			console.log(response)
+
+			this.results = {
+				'ideal_plants': ["peas", "soybeans", "peanuts", "potatoes"]
+			}
+		}
+	}).mount()
+</script>
+
+</body>
+</html>
