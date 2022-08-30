@@ -1,4 +1,5 @@
-![Plant Here Logo](frontend/images/NewLogo.png)
+<img src="frontend/images/NewLogo.png" width="250px"/>
+
 # Plant Here!
 This simple web application (our submission to the 2022 Amazon Sustainability Data Initiaitve Hackathon) allows users to determine what crops would thrive best in their region based on rainfall data and soil pH analyzed with a simple machine learning model.
 
