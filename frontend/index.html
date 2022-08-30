@@ -152,6 +152,10 @@
 								and {{ plant }}.
 							</span>
 						</span>
+
+						<br>
+						<br>
+						{{ results["text"] }}
 					</b>
 				</p>
 			</div>
@@ -200,7 +204,8 @@
 			})
 
 			this.results = {
-				'ideal_plants': response.data
+				'ideal_plants': response.data[0]["plants"],
+				"text": response.data[0]["text"]
 			}
 		}
 	}).mount()
