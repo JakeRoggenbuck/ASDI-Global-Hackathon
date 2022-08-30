@@ -24,7 +24,7 @@
 		<div class="smaller-width" v-scope>
 			<div id="map-canvas"></div>
 			<form id = "form">
-				Start <br>
+				<b style="letter-spacing:  2px">START</b> <br>
 				<select name="startmonth">
 					<option value="1">January</option>
 					<option value="2">February</option>
@@ -76,10 +76,10 @@
 					<option value="2020">2020</option>
 					<option value="2021">2021</option>
 					<option value="2022">2022</option>
-				</select> <br><br>
+				</select><br><br>
 				
 	
-				End <br>
+				<b style="letter-spacing:  2px">END</b> <br>
 				<select name="endmonth">
 					<option value="1">January</option>
 					<option value="2">February</option>
@@ -132,9 +132,8 @@
 					<option value="2021">2021</option>
 					<option value="2022">2022</option>
 				</select> <br><br>
-				<input type="Submit" name="" value="submit"> 
-				<br><br>
-		</form>
+			</form>
+
 			<h3>Directions</h3>
 			<p style="margin-bottom: 32px;">Drag the marker above to whatever location you wish to explore. Then, press analyze and we'll tell you the best crops to plant based on that area's projected rainfall and soil pH!</p>
 
@@ -159,8 +158,6 @@
 		</div>
 	</div>
 </div>
-
-
 
 <script type="module">
 	import { createApp } from 'https://unpkg.com/petite-vue?module'
@@ -196,13 +193,11 @@
 			console.log("Collecting data for " + window.latitude + ", " + window.longitude + ".")
 
 			let response = await axios.post('http://127.0.0.1:8000/plant-request', {
-				latitude: 38,
-				longitude: 39,
+				latitude: window.latitude,
+				longitude: window.longitude,
 				start: "2022-08-30 20:46:13.853164",
 				end: "2022-08-30 20:46:13.853164"
-			}) //host 0.0.0.0 causes CORS error
-						
-			console.log(response)
+			})
 
 			this.results = {
 				'ideal_plants': response.data

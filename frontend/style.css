@@ -119,6 +119,20 @@ html, body {
 	margin-bottom: 32px;
 }
 
+form {
+	font-family: 'Figtree';
+}
+
+select {
+	border: none;
+	outline: none;
+	background-color: #10d068;
+	padding: 12px;
+	border-radius: 12px;
+	font-weight: 800;
+	color: white;
+	}
+
 * {
 	box-sizing: border-box;
 }
