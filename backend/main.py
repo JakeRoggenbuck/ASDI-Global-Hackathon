@@ -12,6 +12,7 @@ class PlantRequest(BaseModel):
         "longitude": float,
         "start": string,
         "end": string,
+        "filter": string
     }
     """
 
@@ -19,6 +20,7 @@ class PlantRequest(BaseModel):
     longitude: float
     start: datetime
     end: datetime
+    filter: string
 
 class PlantReturn(BaseModel):
     """
