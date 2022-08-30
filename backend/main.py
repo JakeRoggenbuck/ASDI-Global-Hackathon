@@ -5,6 +5,7 @@ import pandas as pd
 import boto3
 import uvicorn
 import yaml
+import gzip
 
 with open("./config.yml") as file:
     config = yaml.safe_load(file)
@@ -53,21 +54,21 @@ def plant_request(pl_req: PlantRequest):
     rains = []
 
     time = pl_req.start
-    while time + timedelta(days=1) < pl_req.end:
-        time = time + timedelta(days=1)
 
-        file = f"{time.year}_{str(time.month).zfill(2)}_{time.year}{str(time.month).zfill(2)}{str(time.day).zfill(2)}.csv.gz"
-        print(file)
-        s3_resource.Bucket("rainfall-normalized").download_file("rain/" + file, "tmp/file.csv")
+    file = f"{time.year}/{str(time.month).zfill(2)}/{time.year}{str(time.month).zfill(2)}{str(time.day).zfill(2)}.csv.gz"
+    print(file)
+    buck = s3_resource.Bucket("rainfall-normalized")
+    a = buck.download_file("2020/12/20201227.csv.gz", "tmp/file.csv.gz")
 
-        df = pd.read_csv("tmp/file.csv")
-        print(df)
-        rain = df.iloc[pl_req.latitude].iloc[pl_req.longitude]
-        print(rain)
+    with gzip.open("tmp/file.csv.gz", 'rb') as f:
+        with open("tmp/file.csv", "wb") as file:
+            file.write(f.read())
 
-        rains.append(
-            f"The rain at lat={pl_req.latitude}, lon={pl_req.longitude} is {rain} on {time}"
-        )
+    df = pd.read_csv("tmp/file.csv")
+
+    rain = df.iloc[int(pl_req.latitude)].iloc[int(pl_req.longitude)]
+
+    rains.append(f"The rain at lat={pl_req.latitude}, lon={pl_req.longitude} is {rain} on {time}")
 
     return rains
 
