@@ -3,7 +3,7 @@
 This simple web application (our submission to the 2022 Amazon Sustainability Data Initiaitve Hackathon) allows users to determine what crops would thrive best in their region based on rainfall data and soil pH analyzed with a simple machine learning model.
 
 ## Frontend (ReactJS)
-Frontend is written in ReactJS (more details soon).
+Frontend is a very lightweight single webpage built with HTML/CSS, Vanilla JS, and Petite Vue.
 
 ## Backend (FastAPI)
 Backend is written in FastAPI (more details soon).
