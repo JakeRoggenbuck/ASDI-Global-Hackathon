@@ -1,9 +1,20 @@
 from pydantic import BaseModel
 from fastapi import FastAPI
 from datetime import datetime
+import boto3
 import uvicorn
+import yaml
+
+with open("./config.yml") as file:
+    config = yaml.safe_load(file)
 
 app = FastAPI()
+
+session = boto3.Session(
+    aws_access_key_id=config.aws_access_key_id,
+    aws_secret_access_key=config.aws_secret_access_key,
+)
+
 
 class PlantRequest(BaseModel):
     """
@@ -20,6 +31,7 @@ class PlantRequest(BaseModel):
     start: datetime
     end: datetime
 
+
 class PlantReturn(BaseModel):
     """
     {
@@ -28,16 +40,20 @@ class PlantReturn(BaseModel):
         "conf_lvl": float,
     }
     """
+
     crops: list[int]
     soil_ph: float
     conf_lvl: float
 
+
 def plant_request(pl_req: PlantRequest):
     return f"{pl_req.latitude=} {pl_req.longitude=}"
+
 
 @app.get("/")
 def read_root():
     return {"Hello": "Plant Here!"}
+
 
 @app.get("/timeframe")
 def read_timeframe():
@@ -47,9 +63,11 @@ def read_timeframe():
         "end": datetime(2050, 1, 1),
     }
 
+
 @app.post("/plant-request")
 def read_plant_request(pl_req: PlantRequest):
     return plant_request(pl_req)
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
